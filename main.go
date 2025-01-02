@@ -114,7 +114,7 @@ func main() {
 		if m.Content != "" {
 			escapedContent := escapeMarkdownV2(m.Content)
 			escapedUsername := escapeMarkdownV2(m.Author.Username)
-			telegramMsg := tgbotapi.NewMessage(chatID, fmt.Sprintf("Из ДС:\n*%s*: %s", escapedUsername, escapedContent))
+			telegramMsg := tgbotapi.NewMessage(chatID, fmt.Sprintf("🎧:\n*%s*: %s", escapedUsername, escapedContent))
 			telegramMsg.ParseMode = "MarkdownV2"
 			if _, err := tgBot.Send(telegramMsg); err != nil {
 				log.Printf("Failed to send message to Telegram: %v", err)
@@ -125,7 +125,7 @@ func main() {
 			for _, attachment := range m.Attachments {
 				if strings.HasPrefix(attachment.ContentType, "image/") {
 					photo := tgbotapi.NewPhoto(chatID, tgbotapi.FileURL(attachment.URL))
-					photo.Caption = fmt.Sprintf("ДС:\n %s", m.Author.Username)
+					photo.Caption = fmt.Sprintf("🎧:\n %s", m.Author.Username)
 					if _, err := tgBot.Send(photo); err != nil {
 						log.Printf("Failed to send image to Telegram: %v", err)
 					}
@@ -153,7 +153,7 @@ func main() {
 
 		// 1. Отправка текста в Discord (если есть)
 		if update.Message.Text != "" {
-			telegramMsg := fmt.Sprintf("ТГ:\n**%s**: %s", update.Message.From.UserName, update.Message.Text)
+			telegramMsg := fmt.Sprintf("➤ \n**%s**: %s", update.Message.From.UserName, update.Message.Text)
 			_, err := dg.ChannelMessageSend(discordChannelID, telegramMsg)
 			if err != nil {
 				log.Printf("Failed to send text message to Discord: %v", err)
@@ -179,7 +179,7 @@ func main() {
 			}
 
 			// Отправка фото в Discord
-			err = sendFileToDiscord(dg, discordChannelID, photoPath, fmt.Sprintf("ТГ Фото от %s:", update.Message.From.UserName))
+			err = sendFileToDiscord(dg, discordChannelID, photoPath, fmt.Sprintf("➤ %s:", update.Message.From.UserName))
 			if err != nil {
 				log.Printf("Failed to send photo to Discord: %v", err)
 			}
@@ -212,7 +212,7 @@ func main() {
 			}
 
 			// Отправка видео в Discord
-			err = sendFileToDiscord(dg, discordChannelID, videoPath, fmt.Sprintf("ТГ Видео от %s:", update.Message.From.UserName))
+			err = sendFileToDiscord(dg, discordChannelID, videoPath, fmt.Sprintf("➤ %s:", update.Message.From.UserName))
 			if err != nil {
 				log.Printf("Failed to send video to Discord: %v", err)
 			}
@@ -244,7 +244,7 @@ func main() {
 			}
 
 			// Отправка голосового сообщения в Discord
-			err = sendFileToDiscord(dg, discordChannelID, voicePath, fmt.Sprintf("ТГ Голос от %s:", update.Message.From.UserName))
+			err = sendFileToDiscord(dg, discordChannelID, voicePath, fmt.Sprintf("➤ %s:", update.Message.From.UserName))
 			if err != nil {
 				log.Printf("Failed to send voice to Discord: %v", err)
 			}
